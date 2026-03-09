@@ -13,11 +13,13 @@ export default defineConfig({
   reporter: "cypress-mochawesome-reporter",
   reporterOptions: {
     reportDir: "cypress/reports",
+    json: true,
+    saveJson: true,
     charts: true,
     reportPageTitle: "Cypress Test Report",
     reportFilename: "test-results",
     embeddedScreenshots: true,
-    inlineAssets: true, // shows screenshots inline in the report
+    inlineAssets: true,
     saveAllAttempts: false,
   },
 })

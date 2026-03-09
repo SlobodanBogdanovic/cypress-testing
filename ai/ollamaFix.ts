@@ -189,13 +189,27 @@ async function main() {
     process.exit(1);
   }
 
-  // Basic validation: check if output looks like test code
-  if (!aiOutput.includes("describe") && !aiOutput.includes("it(")) {
+  // Strip markdown code blocks if present
+  let cleanOutput = aiOutput;
+  
+  // Remove markdown code block wrappers (```typescript ... ```)
+  const codeBlockMatch = aiOutput.match(/```(?:typescript|ts)?\s*([\s\S]*?)```/);
+  if (codeBlockMatch) {
+    cleanOutput = codeBlockMatch[1].trim();
+  }
+  
+  // Remove text before "import" statement if it exists
+  const importIndex = cleanOutput.indexOf("import");
+  if (importIndex > 0) {
+    cleanOutput = cleanOutput.substring(importIndex);
+  }
+  
+  if (!cleanOutput.includes("import") && !cleanOutput.includes("describe")) {
     console.warn("⚠️  Warning: AI output doesn't look like test code");
-    console.warn("You may want to review the output before applying\n");
+    console.warn("Please review before applying\n");
   }
 
-  fs.writeFileSync(fixedPath, aiOutput + "\n", "utf-8");
+  fs.writeFileSync(fixedPath, cleanOutput + "\n", "utf-8");
   
   console.log("✅ Success! AI-generated fix has been written to:");
   console.log(`   ${fixedPath}\n`);
