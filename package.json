@@ -4,7 +4,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "cy:run": "cypress run",
+    "ai:analyze": "ts-node ai/analyzeFailures.ts",
+    "ai:ollama": "ts-node ai/ollamaFix.ts",
+    "ai:apply": "ts-node ai/fixTests.ts",
+    "ai:test-local": "ts-node ai/testLocal.ts"
   },
   "dependencies": {
     "@headlessui/react": "^1.5.0",
